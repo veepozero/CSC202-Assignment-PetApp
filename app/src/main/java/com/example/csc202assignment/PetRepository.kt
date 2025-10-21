@@ -4,7 +4,7 @@ import android.content.Context
 import java.util.UUID
 import androidx.room.Room
 
-import com.example.csc202assignment.database.CrimeDatabase
+import com.example.csc202assignment.database.PetDatabase
 import com.example.csc202assignment.database.migration_1_2
 import com.example.csc202assignment.database.migration_2_3
 import kotlinx.coroutines.CoroutineScope
@@ -14,48 +14,48 @@ import kotlinx.coroutines.launch
 import kotlin.jvm.java
 
 
-private const val DATABASE_NAME = "crime-database"
+private const val DATABASE_NAME = "pet-database"
 
-class CrimeRepository private constructor(
+class PetRepository private constructor(
     context: Context,
     private val coroutineScope: CoroutineScope = GlobalScope
 ) {
 
-    private val database: CrimeDatabase = Room
+    private val database: PetDatabase = Room
         .databaseBuilder(
             context.applicationContext,
-            CrimeDatabase::class.java,
+            PetDatabase::class.java,
             DATABASE_NAME
         )
         .addMigrations(migration_1_2, migration_2_3)
         .build()
 
-    fun getCrimes(): Flow<List<Crime>> = database.crimeDao().getCrimes()
+    fun getPets(): Flow<List<Pet>> = database.petDao().getPets()
 
-    suspend fun getCrime(id: UUID): Crime = database.crimeDao().getCrime(id)
+    suspend fun getPet(id: UUID): Pet = database.petDao().getPet(id)
 
-    fun updateCrime(crime: Crime) {
+    fun updatePet(pet: Pet) {
         coroutineScope.launch {
-            database.crimeDao().updateCrime(crime)
+            database.petDao().updatePet(pet)
         }
     }
 
-    suspend fun addCrime(crime: Crime) {
-        database.crimeDao().addCrime(crime)
+    suspend fun addPet(pet: Pet) {
+        database.petDao().addCrime(pet)
     }
 
     companion object {
-        private var INSTANCE: CrimeRepository? = null
+        private var INSTANCE: PetRepository? = null
 
         fun initialize(context: Context) {
             if (INSTANCE == null) {
-                INSTANCE = CrimeRepository(context)
+                INSTANCE = PetRepository(context)
             }
         }
 
-        fun get(): CrimeRepository {
+        fun get(): PetRepository {
             return INSTANCE
-                ?: throw IllegalStateException("CrimeRepository must be initialized")
+                ?: throw IllegalStateException("PetRepository must be initialized")
         }
     }
 }

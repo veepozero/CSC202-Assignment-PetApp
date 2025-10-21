@@ -10,34 +10,34 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
-    private val crimeRepository = CrimeRepository.get()
+class PetDetailViewModel(petID: UUID) : ViewModel() {
+    private val petRepository = PetRepository.get()
 
-    private val _crime: MutableStateFlow<Crime?> = MutableStateFlow(null)
-    val crime: StateFlow<Crime?> = _crime.asStateFlow()
+    private val _pet: MutableStateFlow<Pet?> = MutableStateFlow(null)
+    val pet: StateFlow<Pet?> = _pet.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _crime.value = crimeRepository.getCrime(crimeId)
+            _pet.value = petRepository.getPet(petID)
         }
     }
 
-    fun updateCrime(onUpdate: (Crime) -> Crime) {
-        _crime.update { oldCrime ->
-            oldCrime?.let { onUpdate(it) }
+    fun updatePet(onUpdate: (Pet) -> Pet) {
+        _pet.update { oldPet->
+            oldPet?.let { onUpdate(it) }
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        crime.value?.let { crimeRepository.updateCrime(it) }
+        pet.value?.let { petRepository.updatePet(it) }
     }
 }
 
-class CrimeDetailViewModelFactory(
-    private val crimeId: UUID
+class PetDetailViewModelFactory(
+    private val petId: UUID
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CrimeDetailViewModel(crimeId) as T
+        return PetDetailViewModel(petId) as T
     }
 }

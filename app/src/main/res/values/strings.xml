@@ -1,23 +1,23 @@
 <resources>
 
-    <string name="app_name">CriminalIntent</string>
-    <string name="crime_title_hint">Enter a title for the crime.</string>
-    <string name="Petr_title_label">Title</string>
-    <string name="crime_details_label">Details</string>
-    <string name="crime_solved_label">Solved</string>
-    <string name="new_crime">New Crime</string>
-    <string name="crime_suspect_text">Choose Suspect</string>
-    <string name="crime_report_text">Send Crime Report</string>
-    <string name="crime_report">%1$s!
-        The crime was discovered on %2$s. %3$s, and %4$s
+    <string name="app_name">PetPatrol</string>
+    <string name="pet_title_hint">Enter a description.</string>
+    <string name="Pet_title_label">Title</string>
+    <string name="pet_details_label">Details</string>
+    <string name="pet_found_label">Pet Found </string>
+    <string name="new_pet">New Pet</string>
+    <string name="pet_type_text">Choose pet type</string>
+    <string name="pet_report_text">Send Pet Report</string>
+    <string name="pet_report">%1$s!
+        The Pet was sighted on %2$s. %3$s, and %4$s
     </string>
-    <string name="crime_report_solved">The case is solved</string>
-    <string name="crime_report_unsolved">The case is not solved</string>
-    <string name="crime_report_no_suspect">there is no suspect.</string>
-    <string name="crime_report_suspect">the suspect is %s.</string>
-    <string name="crime_report_subject">CriminalIntent Crime Report</string>
-    <string name="send_report">Send crime report via</string>
-    <string name="crime_title">Crime Title</string>
-    <string name="crime_date">Crime Date</string>
-    <string name="help">Crime Date</string>
+    <string name="pet_report_solved">The case is solved</string>
+    <string name="pet_report_unsolved">The case is not solved</string>
+    <string name="pet_report_not_found">there is no sighting.</string>
+    <string name="pet_report_location">the suspect is %s.</string>
+    <string name="pet_report_subject">PetPatrol Report</string>
+    <string name="send_report">Send report via</string>
+    <string name="pet_title">Sighting Title</string>
+    <string name="pet_date">Sighted Date</string>
+    <string name="help">Help</string>
 </resources>

@@ -1,7 +1,7 @@
 package com.example.csc202assignment
 
 
-import CrimeListAdapter
+import PetListAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,27 +17,28 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.csc202assignment.databinding.FragmentCrimeListBinding
+import com.example.csc202assignment.databinding.FragmentPetDetailBinding
+import com.example.csc202assignment.databinding.FragmentPetListBinding
+import com.example.csc202assignment.databinding.ListItemPetBinding
 
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 
-private const val TAG = "CrimeListFragment"
+private const val TAG = "PetListFragment"
 
-class CrimeListFragment : Fragment() {
+class PetListFragment : Fragment() {
 
-    private var _binding: FragmentCrimeListBinding? = null
+    private var _binding: FragmentPetListBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    private val crimeListViewModel: CrimeListViewModel by viewModels()
+    private val petListViewModel: PetListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -44,23 +46,37 @@ class CrimeListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCrimeListBinding.inflate(inflater, container, false)
-
-        binding.crimeRecyclerView.layoutManager = LinearLayoutManager(context)
-
+        _binding = FragmentPetListBinding.inflate(inflater, container, false)
+        binding.petRecyclerView.layoutManager = LinearLayoutManager(context)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.fragment_pet_list, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.new_pet -> {
+                        showNewPet()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                crimeListViewModel.crimes.collect { crimes ->
-                    binding.crimeRecyclerView.adapter =
-                        CrimeListAdapter(crimes) { crimeId ->
+                petListViewModel.pets.collect { pets ->  // ← Now matches ViewModel
+                    binding.petRecyclerView.adapter =
+                        PetListAdapter(pets) { petId ->
                             findNavController().navigate(
-                                com.example.csc202assignment.CrimeListFragmentDirections.showCrimeDetail(crimeId)
+                                PetListFragmentDirections.showPetDetail(petId)
                             )
                         }
                 }
@@ -73,32 +89,17 @@ class CrimeListFragment : Fragment() {
         _binding = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.fragment_crime_list, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.new_crime -> {
-                showNewCrime()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun showNewCrime() {
+    private fun showNewPet() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val newCrime = Crime(
+            val newPet = Pet(
                 id = UUID.randomUUID(),
                 title = "",
                 date = Date(),
-                isSolved = false
+                isFound = false
             )
-            crimeListViewModel.addCrime(newCrime)
+            petListViewModel.addPet(newPet)
             findNavController().navigate(
-                com.example.csc202assignment.CrimeListFragmentDirections.showCrimeDetail(newCrime.id)
+                PetListFragmentDirections.showPetDetail(newPet.id)
             )
         }
     }

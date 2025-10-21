@@ -25,7 +25,7 @@ class DatePickerFragment : DialogFragment() {
         }
 
         val calendar = Calendar.getInstance()
-        calendar.time = args.crimeDate
+        calendar.time = args.petDate
         val initialYear = calendar.get(Calendar.YEAR)
         val initialMonth = calendar.get(Calendar.MONTH)
         val initialDate = calendar.get(Calendar.DAY_OF_MONTH)

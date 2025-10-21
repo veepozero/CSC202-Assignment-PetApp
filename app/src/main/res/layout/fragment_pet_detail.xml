@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:text="@string/crime_title_label"
+        android:text="@string/Pet_title_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/crime_photo"
+                android:id="@+id/pet_photo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@color/black"
@@ -33,7 +33,7 @@
                 android:scaleType="centerInside" />
 
             <ImageButton
-                android:id="@+id/crime_camera"
+                android:id="@+id/pet_camera"
                 android:layout_width="388dp"
                 android:layout_height="53dp"
                 android:src="@drawable/ic_camera" />
@@ -50,40 +50,40 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/crime_title"
+        android:id="@+id/pet_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/crime_title_hint"
+        android:hint="@string/pet_title_hint"
         android:importantForAutofill="no"
         android:inputType="text" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="95dp"
-        android:text="@string/crime_details_label"
+        android:text="@string/pet_details_label"
         android:textAppearance="?attr/textAppearanceHeadline5" />
 
     <Button
-        android:id="@+id/crime_date"
+        android:id="@+id/patrol_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Wed May 11 11:56 EST 2022" />
 
     <CheckBox
-        android:id="@+id/crime_solved"
+        android:id="@+id/pet_sighted"
         android:layout_width="match_parent"
         android:layout_height="54dp"
-        android:text="@string/crime_solved_label" />
+        android:text="@string/pet_found_label" />
 
     <Button
-        android:id="@+id/crime_suspect"
+        android:id="@+id/pet_type"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:text="@string/crime_suspect_text" />
+        android:text="@string/pet_type_text" />
 
     <Button
-        android:id="@+id/crime_report"
+        android:id="@+id/pet_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/crime_report_text" />
+        android:text="@string/pet_report_text" />
 </LinearLayout>

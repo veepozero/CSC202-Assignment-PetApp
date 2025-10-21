@@ -3,24 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/crimeListFragment">
+    app:startDestination="@id/petListFragment">
 
     <fragment
-        android:id="@+id/crimeListFragment"
-        android:name="com.example.csc202assignment.CrimeListFragment"
-        android:label="CrimeListFragment"
-        tools:layout="@layout/fragment_crime_list">
+        android:id="@+id/petListFragment"
+        android:name="com.example.csc202assignment.PetListFragment"
+        android:label="PetListFragment"
+        tools:layout="@layout/fragment_pet_list">
         <action
-            android:id="@+id/show_crime_detail"
-            app:destination="@id/crimeDetailFragment" />
+            android:id="@+id/show_pet_detail"
+            app:destination="@id/petDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/crimeDetailFragment"
-        android:name="com.example.csc202assignment.CrimeDetailFragment"
-        android:label="CrimeDetailFragment"
-        tools:layout="@layout/fragment_crime_detail">
+        android:id="@+id/petDetailFragment"
+        android:name="com.example.csc202assignment.PetDetailFragment"
+        android:label="PetDetail"
+        tools:layout="@layout/fragment_pet_detail">
         <argument
-            android:name="crimeId"
+            android:name="petId"
             app:argType="java.util.UUID" />
         <action
             android:id="@+id/select_date"
@@ -31,7 +31,7 @@
         android:name="com.example.csc202assignment.DatePickerFragment"
         android:label="DatePickerFragment">
         <argument
-            android:name="crimeDate"
+            android:name="petDate"
             app:argType="java.util.Date" />
     </dialog>
 </navigation>

@@ -6,13 +6,16 @@ import java.util.Date
 import java.util.UUID
 
 @Entity
-data class Crime(
+data class Pet(
     @PrimaryKey val id: UUID,
     val title: String,
     val date: Date,
-    val isSolved: Boolean,
-    val suspect: String = "",
+    val isFound: Boolean,
     val photoFileName: String? = null,
+    val petType: String = "",
+    val species: String = "",
+    val breed: String = "",
+    val colourMarkings: String = ""
 )
 
 

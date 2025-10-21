@@ -22,33 +22,29 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.csc202assignment.CrimeDetailFragmentArgs
-import com.example.csc202assignment.CrimeDetailViewModel
-import com.example.csc202assignment.CrimeDetailViewModelFactory
-import com.example.csc202assignment.DatePickerFragment
-import com.example.csc202assignment.databinding.FragmentCrimeDetailBinding
+import com.example.csc202assignment.databinding.FragmentPetDetailBinding
+
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
-import androidx.core.view.MenuProvider
 
 private const val DATE_FORMAT = "EEE, MMM, dd"
 
-class CrimeDetailFragment : Fragment() {
+class PetDetailFragment : Fragment() {
 
-    private var _binding: FragmentCrimeDetailBinding? = null
+    private var _binding: FragmentPetDetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    private val args: CrimeDetailFragmentArgs by navArgs()
+    private val args: PetDetailFragmentArgs by navArgs()
 
-    private val crimeDetailViewModel: CrimeDetailViewModel by viewModels {
-        CrimeDetailViewModelFactory(args.crimeId)
+    private val petDetailViewModel: PetDetailViewModel by viewModels {
+        PetDetailViewModelFactory(args.petId)
     }
 
-    private val selectSuspect = registerForActivityResult(
+    private val selectPet = registerForActivityResult(
         ActivityResultContracts.PickContact()
     ) { uri: Uri? ->
         uri?.let { parseContactSelection(it) }
@@ -58,8 +54,8 @@ class CrimeDetailFragment : Fragment() {
         ActivityResultContracts.TakePicture()
     ) { didTakePhoto: Boolean ->
         if (didTakePhoto && photoName != null) {
-            crimeDetailViewModel.updateCrime { oldCrime ->
-                oldCrime.copy(photoFileName = photoName)
+            petDetailViewModel.updatePet { oldPet ->
+                oldPet.copy(photoFileName = photoName)
             }
         }
     }
@@ -72,7 +68,7 @@ class CrimeDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding =
-            FragmentCrimeDetailBinding.inflate(inflater, container, false)
+            FragmentPetDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -80,29 +76,29 @@ class CrimeDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            crimeTitle.doOnTextChanged { text, _, _, _ ->
-                crimeDetailViewModel.updateCrime { oldCrime ->
-                    oldCrime.copy(title = text.toString())
+            petTitle.doOnTextChanged { text, _, _, _ ->
+                petDetailViewModel.updatePet { oldPet ->
+                    oldPet.copy(title = text.toString())
                 }
             }
 
-            crimeSolved.setOnCheckedChangeListener { _, isChecked ->
-                crimeDetailViewModel.updateCrime { oldCrime ->
-                    oldCrime.copy(isSolved = isChecked)
+            petSighted.setOnCheckedChangeListener { _, isChecked ->
+                petDetailViewModel.updatePet { oldPet ->
+                    oldPet.copy(isFound = isChecked)
                 }
             }
 
-            crimeSuspect.setOnClickListener {
-                selectSuspect.launch(null)
+            petSighted.setOnClickListener {
+                selectPet.launch(null)
             }
 
-            val selectSuspectIntent = selectSuspect.contract.createIntent(
+            val selectPetType = selectPet.contract.createIntent(
                 requireContext(),
                 null
             )
-            crimeSuspect.isEnabled = canResolveIntent(selectSuspectIntent)
+            petSighted.isEnabled = canResolveIntent(selectPetType)
 
-            crimeCamera.setOnClickListener {
+            petCamera.setOnClickListener {
                 photoName = "IMG_${Date()}.JPG"
                 val photoFile = File(
                     requireContext().applicationContext.filesDir,
@@ -119,13 +115,13 @@ class CrimeDetailFragment : Fragment() {
 
 
 
-            crimeCamera.isEnabled = true
+            petCamera.isEnabled = true
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                crimeDetailViewModel.crime.collect { crime ->
-                    crime?.let { updateUi(it) }
+                petDetailViewModel.pet.collect { pet ->
+                    pet?.let { updateUi(it) }
                 }
             }
         }
@@ -135,7 +131,7 @@ class CrimeDetailFragment : Fragment() {
         ) { _, bundle ->
             val newDate =
                 bundle.getSerializable(DatePickerFragment.BUNDLE_KEY_DATE) as Date
-            crimeDetailViewModel.updateCrime { it.copy(date = newDate) }
+            petDetailViewModel.updatePet { it.copy(date = newDate) }
         }
     }
 
@@ -144,27 +140,29 @@ class CrimeDetailFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateUi(crime: Crime) {
+    private fun updateUi(pet: Pet) {
         binding.apply {
-            if (crimeTitle.text.toString() != crime.title) {
-                crimeTitle.setText(crime.title)
+            if (petTitle.text.toString() != pet.title) {
+                petTitle.setText(pet.title)
             }
-            crimeDate.text = crime.date.toString()
-            crimeDate.setOnClickListener {
+
+
+            patrolDate.text = pet.date.toString()
+            patrolDate.setOnClickListener {
                 findNavController().navigate(
-                    CrimeDetailFragmentDirections.selectDate(crime.date)
+                    PetDetailFragmentDirections.selectDate(pet.date)
                 )
             }
 
-            crimeSolved.isChecked = crime.isSolved
+            petSighted.isChecked = pet.isFound
 
-            crimeReport.setOnClickListener {
+            petReport.setOnClickListener {
                 val reportIntent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, getCrimeReport(crime))
+                    putExtra(Intent.EXTRA_TEXT, getCrimeReport(pet))
                     putExtra(
                         Intent.EXTRA_SUBJECT,
-                        getString(R.string.crime_report_subject)
+                        getString(R.string.pet_report_subject)
                     )
                 }
                 val chooserIntent = Intent.createChooser(
@@ -174,31 +172,31 @@ class CrimeDetailFragment : Fragment() {
                 startActivity(chooserIntent)
             }
 
-            crimeSuspect.text = crime.suspect.ifEmpty {
-                getString(R.string.crime_suspect_text)
+            petType.text = pet.petType.ifEmpty {
+                getString(R.string.pet_type_text)
             }
 
-            updatePhoto(crime.photoFileName)
+            updatePhoto(pet.photoFileName)
         }
     }
 
-    private fun getCrimeReport(crime: Crime): String {
-        val solvedString = if (crime.isSolved) {
-            getString(R.string.crime_report_solved)
+    private fun getCrimeReport(pet: Pet): String {
+        val solvedString = if (pet.isFound) {
+            getString(R.string.pet_report_solved)
         } else {
-            getString(R.string.crime_report_unsolved)
+            getString(R.string.pet_report_unsolved)
         }
 
-        val dateString = DateFormat.format(DATE_FORMAT, crime.date).toString()
-        val suspectText = if (crime.suspect.isBlank()) {
-            getString(R.string.crime_report_no_suspect)
+        val dateString = DateFormat.format(DATE_FORMAT, pet.date).toString()
+        val suspectText = if (pet.petType.isBlank()) {
+            getString(R.string.pet_report_not_found)
         } else {
-            getString(R.string.crime_report_suspect, crime.suspect)
+            getString(R.string.pet_report_location, pet.petType)
         }
 
         return getString(
-            R.string.crime_report,
-            crime.title, dateString, solvedString, suspectText
+            R.string.pet_report,
+            pet.title, dateString, solvedString, suspectText
         )
     }
 
@@ -211,8 +209,8 @@ class CrimeDetailFragment : Fragment() {
         queryCursor?.use { cursor ->
             if (cursor.moveToFirst()) {
                 val suspect = cursor.getString(0)
-                crimeDetailViewModel.updateCrime { oldCrime ->
-                    oldCrime.copy(suspect = suspect)
+                petDetailViewModel.updatePet { oldPet ->
+                    oldPet.copy(petType = suspect)
                 }
             }
         }
@@ -229,24 +227,24 @@ class CrimeDetailFragment : Fragment() {
     }
 
     private fun updatePhoto(photoFileName: String?) {
-        if (binding.crimePhoto.tag != photoFileName) {
+        if (binding.petPhoto.tag != photoFileName) {
             val photoFile = photoFileName?.let {
                 File(requireContext().applicationContext.filesDir, it)
             }
 
             if (photoFile?.exists() == true) {
-                binding.crimePhoto.doOnLayout { measuredView ->
+                binding.petPhoto.doOnLayout { measuredView ->
                     val scaledBitmap = getScaledBitmap(
                         photoFile.path,
                         measuredView.width,
                         measuredView.height
                     )
-                    binding.crimePhoto.setImageBitmap(scaledBitmap)
-                    binding.crimePhoto.tag = photoFileName
+                    binding.petPhoto.setImageBitmap(scaledBitmap)
+                    binding.petPhoto.tag = photoFileName
                 }
             } else {
-                binding.crimePhoto.setImageBitmap(null)
-                binding.crimePhoto.tag = null
+                binding.petPhoto.setImageBitmap(null)
+                binding.petPhoto.tag = null
             }
         }
     }

@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import java.util.Date
 
 
-class CrimeTypeConverters {
+class PetTypeConverters {
     @TypeConverter
     fun fromDate(date: Date): Long {
         return date.time

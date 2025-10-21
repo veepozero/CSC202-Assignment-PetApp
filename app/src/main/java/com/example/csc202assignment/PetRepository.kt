@@ -5,8 +5,9 @@ import java.util.UUID
 import androidx.room.Room
 
 import com.example.csc202assignment.database.PetDatabase
-import com.example.csc202assignment.database.migration_1_2
-import com.example.csc202assignment.database.migration_2_3
+//import com.example.csc202assignment.database.migration_1_2
+//import com.example.csc202assignment.database.migration_2_3
+//import com.example.csc202assignment.database.migration_3_4
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,8 @@ class PetRepository private constructor(
             PetDatabase::class.java,
             DATABASE_NAME
         )
-        .addMigrations(migration_1_2, migration_2_3)
+//        .addMigrations(migration_1_2, migration_2_3, migration_3_4)
+        .fallbackToDestructiveMigration()
         .build()
 
     fun getPets(): Flow<List<Pet>> = database.petDao().getPets()
@@ -41,7 +43,7 @@ class PetRepository private constructor(
     }
 
     suspend fun addPet(pet: Pet) {
-        database.petDao().addCrime(pet)
+        database.petDao().addPet(pet)  // ← Changed from addCrime to addPet
     }
 
     companion object {

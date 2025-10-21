@@ -81,6 +81,54 @@
         android:layout_height="70dp"
         android:text="@string/pet_type_text" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Species"
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+    <!-- Species Spinner -->
+    <Spinner
+        android:id="@+id/pet_species"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
+
+    <!-- Breed Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Breed"
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+    <!-- Breed EditText -->
+    <EditText
+        android:id="@+id/pet_breed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter breed"
+        android:inputType="text"
+        android:importantForAutofill="no" />
+
+    <!-- Colour/Markings Label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Colour/Markings"
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+    <!-- Colour/Markings EditText -->
+    <EditText
+        android:id="@+id/pet_colour_markings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter colour/markings"
+        android:inputType="text"
+        android:importantForAutofill="no" />
+
     <Button
         android:id="@+id/pet_report"
         android:layout_width="match_parent"

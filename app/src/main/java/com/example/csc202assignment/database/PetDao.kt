@@ -20,5 +20,5 @@ interface PetDao {
     suspend fun updatePet(pet: Pet)
 
     @Insert
-    suspend fun addCrime(pet: Pet)
+    suspend fun addPet(pet: Pet)  // ← Changed from addCrime to addPet
 }

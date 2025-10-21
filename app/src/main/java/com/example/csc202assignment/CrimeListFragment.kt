@@ -1,4 +1,4 @@
-package com.bignerdranch.android.criminalintent
+package com.example.csc202assignment
 
 
 import CrimeListAdapter
@@ -17,11 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.csc202assignment.databinding.FragmentCrimeListBinding
-import com.example.csc202assignment.Crime
-import com.example.csc202assignment.CrimeListViewModel
-import com.example.csc202assignment.R
 
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -64,7 +60,7 @@ class CrimeListFragment : Fragment() {
                     binding.crimeRecyclerView.adapter =
                         CrimeListAdapter(crimes) { crimeId ->
                             findNavController().navigate(
-                                CrimeListFragmentDirections.showCrimeDetail(crimeId)
+                                com.example.csc202assignment.CrimeListFragmentDirections.showCrimeDetail(crimeId)
                             )
                         }
                 }
@@ -102,7 +98,7 @@ class CrimeListFragment : Fragment() {
             )
             crimeListViewModel.addCrime(newCrime)
             findNavController().navigate(
-                CrimeListFragmentDirections.showCrimeDetail(newCrime.id)
+                com.example.csc202assignment.CrimeListFragmentDirections.showCrimeDetail(newCrime.id)
             )
         }
     }

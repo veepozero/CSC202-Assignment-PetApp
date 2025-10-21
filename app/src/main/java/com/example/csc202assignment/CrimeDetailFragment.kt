@@ -30,6 +30,7 @@ import com.example.csc202assignment.databinding.FragmentCrimeDetailBinding
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Date
+import androidx.core.view.MenuProvider
 
 private const val DATE_FORMAT = "EEE, MMM, dd"
 
@@ -109,18 +110,16 @@ class CrimeDetailFragment : Fragment() {
                 )
                 val photoUri = FileProvider.getUriForFile(
                     requireContext(),
-                    "com.bignerdranch.android.criminalintent.fileprovider",
+                    "com.example.csc202assignment.fileprovider",
                     photoFile
                 )
 
                 takePhoto.launch(photoUri)
             }
 
-            val captureImageIntent = takePhoto.contract.createIntent(
-                requireContext(),
-                null
-            )
-            crimeCamera.isEnabled = canResolveIntent(captureImageIntent)
+
+
+            crimeCamera.isEnabled = true
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
